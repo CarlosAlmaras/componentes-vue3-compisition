@@ -1,0 +1,50 @@
+<script setup>
+/*En Vue JS, Composition APi, utilizando el setup, tenemos lo que se conoce como defineProps, es un método, no se importa, siempre y
+cuando utilicemos el setup, podemos llamarlo directamente. Dentro del método dentro de un array podemos ir especificamndo cada 
+uno de estos elmentos (props). Que estamos diciendo, que mi componente ahora va a tener un props Que se va a llamar title, y se lo
+pasamos al defineProps. Al pasar el props, tenemos que registrarlo de laguna forma en nuestro componenet, y para eso esta defineProps.
+Que le pasamos el prop correspondiente. 
+
+Y ese title puede ser accedido directamente en el template utilizando la interpolación.*/
+
+//Multiples props
+//const props = defineProps(['title', 'id', 'body', 'colorText']);
+/*Ademas de crear el defineProps como un array, poedmos hacerlo como un objeto, si un dato necesita un dato por defecto, 
+abrir llaves, y configurarlo o colocar mas opciones*/
+const props = defineProps({
+    title: String,
+    id: Number,
+    body: {
+        type: String,
+        default: 'Sin descripción',
+    },
+    colorText: String
+});
+
+console.log(props);
+console.log(props.title);
+
+/*Define Props - tambien puede devolver los props correspondientes, podemos asignarlo a una variable y poder acceder a los 
+props dentro del script, por si lo necesitamos. Este nos devueleve un objeto con cada uno de los elementos ue tenemos en el array.
+
+Si no está usando <script setup>, los accesorios deben declararse usando la opción props,
+ y el objeto props se pasará setup()como el primer argumento:
+
+export default {
+  props: ['title'],
+  setup(props) {
+    console.log(props.title)
+  }
+}
+*/
+</script>
+
+<template>
+    <div class="card">
+        <div class="card-body">
+            <h5 :class="`text-${colorText}`" class="card-title">{{ id }}.- {{ title }}</h5>
+
+            <p>{{ body }}</p>
+        </div>
+    </div>
+</template>

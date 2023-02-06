@@ -1,0 +1,57 @@
+<script>
+//API option
+//Para la api de opciones no necesitamos de ningún atributo especial, pero si necesitamos la exportación por defecte
+
+
+
+/*
+Cuando nosotros trabajamos con el export default, tenemos que ir devolviendole métodos o objetos correspondientes
+que pueden ser utilizados en el template. Uno de los mas populares es el método data, este método tiene la opción de 
+retornar todos los datos reactivos que ustedes necesitan utilizar, como por ejemplo el counter, como es un objeto el que estamos
+retornando le ponemos "counter: 0", todo lo que ponemos dentro de data, dentro del return va a ser un dato reactivo, por lo tanto,
+si tenemos mas, colocamos una coma y el segundo dato reactivo "segundo: 0", que puede ser un array, objeto, etc.
+
+Para poder hacer datos reactivos en la API de opciones, utilizamos el método data, que tiene que retornar un objeto con cada uno de
+nuestros datos.
+
+los métodos van dentro de la propiedad methods, los creamos como nosotros queramos, y para poder acceder a los datos reactivos,
+que están dentro de data, tenemos acceder con la palabra reservada this.
+
+*/
+export default {
+  data() {
+    return {
+      counter: 0,
+      segundo: 0
+    }
+  },
+  methods: {
+    increment() {
+      this.counter ++
+    }
+  }
+}
+</script>
+
+<template>
+  <h1>APP</h1>
+  <button @click="increment">{{ counter }}</button>
+</template>
+
+<!-- <script>
+import { ref } from 'vue';//es importante que este este afuera del export default
+
+export default {
+  setup() {
+    const counter = ref(0)
+
+    const increment = () => {
+      counter.value++;
+    }
+    return {
+      counter,
+      increment
+    } 
+  }
+}
+</script> -->

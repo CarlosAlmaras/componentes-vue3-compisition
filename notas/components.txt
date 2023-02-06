@@ -1,0 +1,44 @@
+Components
+component(opens new window)
+Los componentes nos permiten dividir la interfaz de usuario en piezas independientes y reutilizables, y pensar en cada pieza de forma aislada.
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<script setup>
+//Utilizamos el setup, ya que sabemos que por detras vue, hace un export por default, lo importamos sin las llaves, ejemplo:
+// import {ButtonCounter} from './components/ButtonCounter.vue';, y tambien
+//lo podemos nombrar como queramos(ButtonCounter), pero es buena práctica que se llame igual al archivo
+import ButtonCounter from './components/ButtonCounter.vue';
+</script>
+
+<template>
+  <h1>APP</h1>
+
+  <!--Cada componente(btn), tiene su propio dato reactivo(cada boton empieza desde 0, aumentan de forma independiente),
+     es decir, dentro de forma aislada, lo tiene en su componente-->
+  <ButtonCounter/>
+  <!--Tambien puede ser así-->
+  <ButtonCounter></ButtonCounter>
+  <!--Fíjate que al hacer clic en los botones, cada uno mantiene el suyo propio, separado count.
+   Esto se debe a que cada vez que usa un componente, se crea una nueva instancia del mismo.-->
+  
+   <!--
+   En SFC, se recomienda usar nombres PascalCase de etiquetas para componentes secundarios para diferenciarlos de los elementos HTML nativos.
+   Se refiere mas que nada a los componentes que estamos importando, para no confundirnos con los elementos de HTMl como h1, p, a, etc,
+   ya que se escriben en minuscula.
+
+   Si está creando sus plantillas directamente en un DOM, la plantilla estará sujeta al comportamiento de análisis HTML nativo del navegador.
+   En tales casos, deberá usar etiquetas kebab-case de cierre explícitas para los componentes. Es decir si utilizamos vue con el CDN, no se puede
+   utilizar la sintaxis de PascalCase, sino kebab-case(minusculas y separadas por guion medio):
+
+   if this template is written in the DOM
+   <button-counter></button-counter>
+   <button-counter></button-counter>
+   <button-counter></button-counter>
+
+   No hay problema si utilizamos esta sintaxis aqui, no importa si escribimos nuestro componente en mayuscula.
+   -->
+   <p style="color: red;">Boton escrito con  kebab-case</p>
+   <button-counter style="color: red;"></button-counter>
+   <!--Si estamos trabajando con VITE, no debería haber ningun problema con lo que vimos de la sintaxis-->
+</template>

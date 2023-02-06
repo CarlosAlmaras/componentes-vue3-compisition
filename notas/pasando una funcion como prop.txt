@@ -1,0 +1,99 @@
+<script setup>
+import ButtonCounter from './components/ButtonCounter.vue';
+import BlogPost from './components/BlogPost.vue'
+import { ref } from 'vue';
+
+const post = ref([
+   {title: 'Post-1', id: '1', body: 'descripcion - 1', color: 'primary'},
+   {title: 'Post-2', id: '2', body: 'descripcion - 2', color: 'secondary'},
+   {title: 'Post-3', id: '3', body: 'descripcion - 3', color: 'success'},
+   {title: 'Post-4', id: '4', color: 'primary'},
+]);
+const favorito = ref('')
+
+const cambiarFAvorito = (post) => {
+   favorito.value = post;
+}
+</script>
+
+<template>
+   <div class="container">
+    
+      <h1>APP de Carlos</h1>
+      <h2>Mi Post Favorito: {{ favorito }}</h2>
+
+      <ButtonCounter/>
+      <button-counter></button-counter>
+
+      <!--Podemos enviar ese evento atraves de un props, pero no se recomienda mucho.
+
+         Function Props
+
+         Parece tentador pero analice el flujo de trabajo... aquí le estamos pasando a cada uno de nuestros componentes tooooooda la función, 
+         por ende cada posts tendrá este método en su script setup. En cambio, cuando activamos un evento (defineEmits), 
+         no es que el método exista en el componente, sino que lo estamos llamando del componente principal, 
+         donde ahí solo existe un evento en cuestión. Por ende esto se considera un antipatrón en Vue.
+
+         Al convertirlo en prop, nosotros lo que estamos haciendo es enviar toda la función, al componente secundario o hijo. 
+         Ahorita es una función corta, pero si fuera una función mas grande.
+         En cambio con el emit activamos el método desde el componente padre.
+      -->
+      <Blog-Post 
+       v-for="p in post" 
+       :key="p.id"
+       :title="p.title" 
+       :id="p.id" 
+       :body="p.body" 
+       :colorText="p.color" 
+       class="mt-5"
+       :cambiarFAvoritoProps = 'cambiarFAvorito'
+       @cambiarFAvoritoNombre = 'cambiarFAvorito'
+       ></Blog-Post>
+
+       
+   </div>
+  
+</template>
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+componente anidado
+<script setup>
+//Multiples props
+//const props = defineProps(['title', 'id', 'body', 'colorText']); Tambien podría estar aqui la función cambiarFAvoritoProps
+
+const props = defineProps({
+    title: String,
+    id: Number,
+    body: {
+        type: String,
+        default: 'Sin descripción',
+    },
+    colorText: String,
+    cambiarFAvoritoProps: Function
+});
+
+console.log(props);
+console.log(props.title);
+
+ const emit = defineEmits(['cambiarFAvoritoNombre'])
+
+</script>
+
+<template>
+    <div class="card">
+        <div class="card-body">
+            <h5 :class="`text-${colorText}`" class="card-title">{{ id }}.- {{ title }}</h5>
+
+            <p>{{ body }}</p>
+           
+            <button 
+             class="btn btn-outline-primary" 
+             @click="cambiarFAvoritoProps(title)"
+             >Add Favorito con Props</button>
+             <button 
+             class="btn btn-outline-primary m-2" 
+             @click="emit('cambiarFAvoritoNombre', title)"
+             >Add Favorito con Emit</button>
+
+        </div>
+    </div>
+</template>

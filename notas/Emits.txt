@@ -1,0 +1,128 @@
+<script setup>
+import ButtonCounter from './components/ButtonCounter.vue';
+import BlogPost from './components/BlogPost.vue'
+import { ref } from 'vue';
+
+const post = ref([
+   {title: 'Post-1', id: '1', body: 'descripcion - 1', color: 'primary'},
+   {title: 'Post-2', id: '2', body: 'descripcion - 2', color: 'secondary'},
+   {title: 'Post-3', id: '3', body: 'descripcion - 3', color: 'success'},
+   {title: 'Post-4', id: '4', color: 'primary'},
+]);
+const favorito = ref('')
+
+const cambiarFAvorito = (post) => {
+   favorito.value = post;
+}
+</script>
+
+<template>
+   <div class="container">
+    
+      <h1>APP de Carlos</h1>
+      <h2>Mi Post Favorito: {{ favorito }}</h2>
+
+      <ButtonCounter/>
+      <button-counter></button-counter>
+
+      <!--V-for en un componente-->
+        <!--Emit(Escuchar Eventos)
+         cambiarFAvorito es un método que esta en nuestro componente principal, pero yo en mi componente anidado o secundario(Blog-Post),
+         necesita activarlo, necesito algo que esta en mi componte principal o padre, para eso le pasamos atraves del arroba, un evento
+         personalizable o propiedad, ustedes les inventan el nombre y lo igualemos al método en cuestión, 
+         el nombre dela propiedad es el que llamamos dentro del emit
+      -->
+      <Blog-Post 
+       v-for="p in post" 
+       :key="p.id"
+       :title="p.title" 
+       :id="p.id" 
+       :body="p.body" 
+       :colorText="p.color" 
+       class="mt-5"
+       @cambiarFAvoritoNombre = 'cambiarFAvorito'
+       ></Blog-Post>
+
+       
+   </div>
+  
+</template>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////777
+<script setup>
+/*En Vue JS, Composition APi, utilizando el setup, tenemos lo que se conoce como defineProps, es un método, no se importa, siempre y
+cuando utilicemos el setup, podemos llamarlo directamente. Dentro del método dentro de un array podemos ir especificamndo cada 
+uno de estos elmentos (props). Que estamos diciendo, que mi componente ahora va a tener un props Que se va a llamar title, y se lo
+pasamos al defineProps. Al pasar el props, tenemos que registrarlo de laguna forma en nuestro componenet, y para eso esta defineProps.
+Que le pasamos el prop correspondiente. 
+
+Y ese title puede ser accedido directamente en el template utilizando la interpolación.*/
+
+//Multiples props
+//const props = defineProps(['title', 'id', 'body', 'colorText']);
+/*Ademas de crear el defineProps como un array, poedmos hacerlo como un objeto, si un dato necesita un dato por defecto, 
+abrir llaves, y configurarlo o colocar mas opciones*/
+const props = defineProps({
+    title: String,
+    id: Number,
+    body: {
+        type: String,
+        default: 'Sin descripción',
+    },
+    colorText: String
+});
+
+console.log(props);
+console.log(props.title);
+
+/*Define Props - tambien puede devolver los props correspondientes, podemos asignarlo a una variable y poder acceder a los 
+props dentro del script, por si lo necesitamos. Este nos devueleve un objeto con cada uno de los elementos ue tenemos en el array.
+
+Si no está usando <script setup>, los accesorios deben declararse usando la opción props,
+ y el objeto props se pasará setup()como el primer argumento:
+
+export default {
+  props: ['title'],
+  setup(props) {
+    console.log(props.title)
+  }
+}
+*/
+
+// defineEmits recibe un array y adentro colocamos el nombre de la propiedad.
+//Ya no necesitamos acceder al método global de emit, le borramos $.
+ const emit = defineEmits(['cambiarFAvoritoNombre'])
+
+ /*Podemo acceder al emit, desde el script setup
+    emit('cambiarFAvoritoNombre', title)
+
+ Accediendo al emit sin el atributo set up
+    
+export default {
+  emits: ['enlarge-text'],
+  setup(props, ctx) {
+    ctx.emit('enlarge-text')
+  }
+}
+ */
+</script>
+
+<template>
+    <div class="card">
+        <div class="card-body">
+            <h5 :class="`text-${colorText}`" class="card-title">{{ id }}.- {{ title }}</h5>
+
+            <p>{{ body }}</p>
+            <!-- 
+            El nombre de la propiedad o del evento personalizados, es el que llamamos dentro del emit, le pasamos como
+            segundo argunto, 100% opcional, el valor en este caso el título, lo recibe nuestra función.
+            
+            El signo de peso $, activa métodos globales que hay en VUE, pero aveces no es tan bonito activar métodos globales y queremos
+            tener un poquito mas de control, Para eso podemos utilizar el define Emits
+                                            -->
+            <button 
+             class="btn btn-outline-primary" 
+             @click="emit('cambiarFAvoritoNombre', title)"
+             >Favorito</button>
+        </div>
+    </div>
+</template>

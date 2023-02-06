@@ -1,0 +1,77 @@
+/*
+<script setup> es un azúcar sintáctico(que quiere decir esto, que vue esta haciendo otra configuración) 
+en tiempo de compilación para usar la API de composición dentro de componentes de archivo único (SFC).
+Es la sintaxis recomendada si está utilizando tanto SFC como API de composición.
+Proporciona una serie de ventajas:
+1.-Código más breve y menos repetitivo.
+2.-Mejor rendimiento en tiempo de ejecución.
+3.-Capacidad para declarar accesorios y eventos emitidos usando TypeScript puro(Básicamente que tiene alta compatibilidad con typescript)
+*/
+
+El setup, es un método, si lo sacamos de forma explicita, tenemos que escribir el export default
+
+export default {
+  setup() {
+
+  }
+}
+
+Cada vez que hacemos un componente, tenemos que exportarlo, ahora, ese setup, hace la exportación por defecto.
+
+Y ademas támbien es un método que se llama setup, dentro del setup, es lo que nosotros trabajamos, como métodos
+propiedades computadas, datos reactivos, etc. Por lo tanto nos estamos ahorrando código
+
+Cada vez que nosotros escribiamos <script setup></script>, se esta haciendo toda esta operación:
+
+export default {
+  setup() {
+    
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<script>
+import { ref } from 'vue';//es importante que este este afuera del export default
+
+export default {
+  setup() {
+    const counter = ref(0)
+
+    const increment = () => {
+      counter.value++;
+    }
+    return {
+      counter,
+      increment
+    } 
+  }
+}
+/*Para que el template pueda acceder a los métodos, variables reactivas, etc, hay que exportarlos, para ello se utiliza el return.
+sin el return nos marca un error.
+
+El método setup, que esta dentro del export default, tiene que exportar todo lo que nosotros necesitamos en el componente, por lo
+tanto tenemos que retornar el counter.
+Asi vemos todo el código que nos ahorramos, y todo lo que escribimos dentro del script con el atributo de setup, se retorna 
+automaticamente a nuestro template. De lo contrario se tiene que hacer todo lo anterior.Lo mismo pasa con los métodos.
+
+Entonces al utilizar el atributo setup, vue js, esta haciendo todo una configuración por detrás.
+*/
+</script>
+
+<template>
+  <h1>APP</h1>
+  <button @click="increment">{{ counter }}</button>
+</template>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+LAs 2 formas <script setup></script> y
+
+<script>
+  export default {
+    setup() {
+      
+    }
+  }
+</script>
+
+son la API de composition

@@ -1,0 +1,51 @@
+<script setup>
+import ButtonCounter from './components/ButtonCounter.vue';
+import BlogPost from './components/BlogPost.vue'
+import { ref } from 'vue';
+
+const post = ref([
+   {title: 'Post-1', id: '1', body: 'descripcion - 1', color: 'primary'},
+   {title: 'Post-2', id: '2', body: 'descripcion - 2', color: 'secondary'},
+   {title: 'Post-3', id: '3', body: 'descripcion - 3', color: 'success'},
+   {title: 'Post-4', id: '4', color: 'primary'},
+])
+</script>
+
+<template>
+   <div class="container">
+      <h1>APP de Carlos</h1>
+
+      <ButtonCounter/>
+      <button-counter></button-counter>
+
+      <!--V-for en un componente-->
+      <Blog-Post 
+       v-for="p in post" 
+       :key="p.id"
+       :title="p.title" 
+       :id="p.id" 
+       :body="p.body" 
+       :colorText="p.color" 
+       class="mt-5"
+       ></Blog-Post>
+       
+       <!--Los 2 puntos en el id, hace que lo interprete como number-->
+      <!-- <Blog-Post title="Post-2" :id="2" body="Descripción 2" colorText="secondary" class="mt-2"/>
+      <Blog-Post title="Post-3" :id="3" body="Descripción 3" colorText="success" class="mt-2"/>
+      <Blog-Post title="Post-4" :id="4" colorText="primary" class="mt-2"/> -->
+     
+      <!--
+         Props (defineProps)
+      Los componentes tambien pueden ser dinamicos, para ello Vuejs y mayoria de los frameworks tienen el poder de enviar los props
+      o accesorios. Estos props hacen dinamicos a los componentes.
+
+      Definción técnica
+
+      Los accesorios son atributos personalizados que puede registrar en un componente.
+      defineProps: es una macro en tiempo de compilación que solo está disponible en el interior <script setup> 
+      y no necesita ser importada explícitamente.
+      Los accesorios declarados se exponen automáticamente a la plantilla.
+      -->
+   </div>
+  
+</template>
